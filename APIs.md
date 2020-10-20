@@ -1,7 +1,5 @@
 # APIs
 
-**Running the app: mvn build exec:java**
-
 Here is a list of the APIs that need to be implemented by OpenChat.
 
 ## Register New User
