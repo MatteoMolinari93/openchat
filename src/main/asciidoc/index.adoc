@@ -1,0 +1,16 @@
+= Openchat Docs
+Matteo Molinari;
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+
+Sample application demonstrating how to use Spring REST Docs with JUnit 5.
+
+`BeerOrderControllerTest` makes a call to a very simple service and produces three
+documentation snippets.
+
+GET BEER
+
+One showing how to make a request using cURL:
+
+include::{snippets}/v1/beer-get/curl-request.adoc[]
