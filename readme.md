@@ -1,1 +1,1 @@
-https://github.com/MatteoMolinari93/cleancoders_openchat/tree/master
+https://github.com/sandromancuso/cleancoders_openchat/tree/master
