@@ -16,6 +16,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.molim.cleancoders.openchat.services.RegistrationService;
+import com.molim.cleancoders.openchat.web.exceptions.UsernameAlreadyInUseExcpetion;
 import com.molim.cleancoders.openchat.web.models.UserDto;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -79,16 +80,20 @@ public class RegistrationControllerTest {
 	
 	@Test
 	void registerUnsuccessful() throws Exception {
-		System.out.println(contextPath);
+		when(registrationService.registerUser(any())).thenThrow(new UsernameAlreadyInUseExcpetion());
 		
 		mockMvc.perform(post(contextPath + "/registration").content("{\r\n"
 				+ "	\"username\" : \"Alice\",\r\n"
 				+ "	\"password\" : \"alki324d\",\r\n"
 				+ "	\"about\" : \"I love playing the piano and travelling.\"\r\n"
 				+ "}\r\n"
-				+ ""))
+				+ "").contentType(MediaType.APPLICATION_JSON))
 			.andExpect(status().isBadRequest())
-			.andExpect(content().contentType(MediaType.APPLICATION_JSON));
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+			.andExpect(jsonPath("$.message", is("Username already in use.")))
+			;
+		
+		verify(registrationService).registerUser(Mockito.any(UserDto.class));
 	}
 	
 
