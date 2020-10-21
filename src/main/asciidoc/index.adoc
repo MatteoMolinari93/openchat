@@ -26,3 +26,24 @@ include::{snippets}/registration/response-body.adoc[]
 Response Fields:
 include::{snippets}/registration/response-fields.adoc[]
 
+LOGIN USER
+
+One showing how to make a request using cURL:
+
+include::{snippets}/login/curl-request.adoc[]
+
+One showing the HTTP request:
+
+include::{snippets}/login/http-request.adoc[]
+
+And one showing the HTTP response:
+
+include::{snippets}/login/http-response.adoc[]
+
+Response Body:
+include::{snippets}/login/response-body.adoc[]
+
+Response Fields:
+include::{snippets}/login/response-fields.adoc[]
+
+

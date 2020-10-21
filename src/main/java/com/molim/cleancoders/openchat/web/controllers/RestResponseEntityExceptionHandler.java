@@ -7,13 +7,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.molim.cleancoders.openchat.web.exceptions.UsernameAlreadyInUseExcpetion;
+import com.molim.cleancoders.openchat.exceptions.InvalidCredentialsException;
+import com.molim.cleancoders.openchat.exceptions.UsernameAlreadyInUseException;
 import com.molim.cleancoders.openchat.web.models.ErrorDto;
 
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-@ExceptionHandler(value = { UsernameAlreadyInUseExcpetion.class })
+@ExceptionHandler(value = { UsernameAlreadyInUseException.class, InvalidCredentialsException.class })
 protected ResponseEntity<ErrorDto> handleConflict(RuntimeException ex, WebRequest request) {
     return new ResponseEntity<ErrorDto>(new ErrorDto(ex.getMessage()), HttpStatus.BAD_REQUEST);
 }

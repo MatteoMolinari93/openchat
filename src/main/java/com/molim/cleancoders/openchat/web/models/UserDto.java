@@ -16,7 +16,11 @@ public class UserDto extends RepresentationModel<UserDto> {
 	private final String username;
 	
 	@JsonInclude(Include.NON_NULL)
-	private final String password;
+	private String password;
 	private final String about;
+	
+	public void removePassword() {
+		this.password = null;
+	}
 
 }
