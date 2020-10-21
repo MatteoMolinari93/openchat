@@ -4,13 +4,25 @@ Matteo Molinari;
 :icons: font
 :source-highlighter: highlightjs
 
-Sample application demonstrating how to use Spring REST Docs with JUnit 5.
+Sample application demonstrating how to use Spring B.
 
-`BeerOrderControllerTest` makes a call to a very simple service and produces three
-documentation snippets.
-
-GET BEER
+REGISTER USER
 
 One showing how to make a request using cURL:
 
-include::{snippets}/v1/beer-get/curl-request.adoc[]
+include::{snippets}/registration/curl-request.adoc[]
+
+One showing the HTTP request:
+
+include::{snippets}/registration/http-request.adoc[]
+
+And one showing the HTTP response:
+
+include::{snippets}/registration/http-response.adoc[]
+
+Response Body:
+include::{snippets}/registration/response-body.adoc[]
+
+Response Fields:
+include::{snippets}/registration/response-fields.adoc[]
+

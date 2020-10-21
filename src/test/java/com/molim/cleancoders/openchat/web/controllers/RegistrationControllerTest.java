@@ -66,7 +66,6 @@ public class RegistrationControllerTest {
 					responseFields(
 							fieldWithPath("id").description("New User Id"),
 							fieldWithPath("username").description("New User Username"),
-							fieldWithPath("password").ignored(),
 							fieldWithPath("about").description("General information about the user.")
 							)))
 			.andExpect(status().isCreated())
