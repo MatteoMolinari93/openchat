@@ -63,7 +63,7 @@ Status CREATED - 201
 
 **Failure**
 Status: BAD_REQUEST - 400 (in case user does not exist)
-Response: "User does not exit."
+Response: "User does not exist."
 
 ## Retrieve Posts (User timeline)
 

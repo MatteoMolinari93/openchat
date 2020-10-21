@@ -17,10 +17,15 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.molim.cleancoders.openchat.exceptions.InvalidCredentialsException;
+import com.molim.cleancoders.openchat.exceptions.UserDoesNotExistException;
 import com.molim.cleancoders.openchat.services.LoginService;
+import com.molim.cleancoders.openchat.services.PostService;
+import com.molim.cleancoders.openchat.web.models.PostDto;
 import com.molim.cleancoders.openchat.web.models.UserDto;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import java.time.LocalDateTime;
 
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.hamcrest.Matchers.*;
@@ -31,70 +36,63 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 @ExtendWith(RestDocumentationExtension.class)
 @AutoConfigureRestDocs(uriScheme = "https", uriHost = "com.molim", uriPort = 80)
 @TestPropertySource("classpath:application.properties")
-@WebMvcTest(LoginController.class)
-public class LoginControllerTest {
+@WebMvcTest(PostController.class)
+public class PostControllerTest {
 	
 	@Value("${server.servlet.context-path}")
 	private String contextPath;
 	
 	@MockBean
-	LoginService loginService;
+	PostService postService;
 	
 	@Autowired
 	MockMvc mockMvc;
 	
-	@Captor
-	ArgumentCaptor<UserDto> userDtoCaptor;
-	
 	@Test
-	void loginSuccessful() throws Exception {
-		when(loginService.loginUser(Mockito.any(UserDto.class)))
-			.thenReturn(UserDto.builder()
+	void createPostSuccessful() throws Exception {
+		when(postService.createPost(Mockito.any(PostDto.class)))
+			.thenReturn(PostDto.builder()
 						.id(1L)
-						.username("Alice")
-						.password("alki324d")
-						.about("I love playing the piano and travelling.")
+						.userId(1L)
+						.text("Hello everyone. I'm Alice.")
+						.dateTime(LocalDateTime.now())
 						.build());
 		
-		mockMvc.perform(post(contextPath + "/login").content("{\r\n"
-				+ "	\"username\" : \"Alice\",\r\n"
-				+ "	\"password\" : \"alki324d\"\r\n"
-				+ "}\r\n"
-				+ "").contentType(MediaType.APPLICATION_JSON))
-			.andExpect(status().isOk())
+		mockMvc.perform(post(contextPath + "/user/{id}/post", 1L).content("{\r\n"
+				+ "	\"text\" : \"Hello everyone. I'm Alice.\"\r\n"
+				+ "}").contentType(MediaType.APPLICATION_JSON))
+			.andExpect(status().isCreated())
 			.andExpect(content().contentType(MediaTypes.HAL_JSON))
-			.andExpect(jsonPath("$.username", is("Alice")))
-			.andExpect(jsonPath("$.id", notNullValue()))
-			.andExpect(jsonPath("$.password").doesNotExist())
-			.andDo(document("/login",
+			.andExpect(jsonPath("$.userId", is(1)))
+			.andExpect(jsonPath("$.id", is(1)))
+			.andExpect(jsonPath("$.text", is("Hello everyone. I'm Alice.")))
+			.andExpect(jsonPath("$.dateTime", notNullValue()))
+			.andDo(document("/post",
 					requestFields(
-							fieldWithPath("username").description("New User Username"),
-							fieldWithPath("password").description("New User Password")
+							fieldWithPath("text").description("text of the post")
 							),
 					responseFields(
-							fieldWithPath("id").description("User Id"),
-							fieldWithPath("username").description("Username"),
-							fieldWithPath("about").description("General information about the user.")
+							fieldWithPath("id").description("Post Id"),
+							fieldWithPath("userId").description("Id owner"),
+							fieldWithPath("text").description("Content of the post"),
+							fieldWithPath("dateTime").description("Creation dateTime")
 					)));
 				
-		verify(loginService).loginUser(Mockito.any(UserDto.class));
+		verify(postService).createPost(Mockito.any(PostDto.class));
 	}
 	
 	@Test
 	void loginUnsuccessful() throws Exception {
-		when(loginService.loginUser(any())).thenThrow(new InvalidCredentialsException());
+		when(postService.createPost(any())).thenThrow(new UserDoesNotExistException());
 		
-		mockMvc.perform(post(contextPath + "/login").content("{\r\n"
-				+ "	\"username\" : \"Alice\",\r\n"
-				+ "	\"password\" : \"alki324d\",\r\n"
-				+ "	\"about\" : \"I love playing the piano and travelling.\"\r\n"
-				+ "}\r\n"
-				+ "").contentType(MediaType.APPLICATION_JSON))
+		mockMvc.perform(post(contextPath + "/user/{id}/post", 1L).content("{\r\n"
+				+ "	\"text\" : \"Hello everyone. I'm Alice.\"\r\n"
+				+ "}").contentType(MediaType.APPLICATION_JSON))
 			.andExpect(status().isBadRequest())
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-			.andExpect(jsonPath("$.message", is("Invalid credentials.")));
+			.andExpect(jsonPath("$.message", is("User does not exist.")));
 		
-		verify(loginService).loginUser(Mockito.any(UserDto.class));
+		verify(postService).createPost(Mockito.any(PostDto.class));
 	}
 	
 

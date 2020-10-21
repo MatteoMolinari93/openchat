@@ -4,10 +4,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(code = HttpStatus.BAD_REQUEST, reason = "Test")
-public class UsernameAlreadyInUseException extends BadRequestException {
+public class UserDoesNotExistException extends BadRequestException {
 	
-	public UsernameAlreadyInUseException() {
-		super("Username already in use.");
+	public UserDoesNotExistException() {
+		super("User does not exist.");
 	}
 
 }

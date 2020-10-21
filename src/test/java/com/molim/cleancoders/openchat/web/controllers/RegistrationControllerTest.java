@@ -56,6 +56,11 @@ public class RegistrationControllerTest {
 				+ "	\"about\" : \"I love playing the piano and travelling.\"\r\n"
 				+ "}\r\n"
 				+ "").contentType(MediaType.APPLICATION_JSON))
+			.andExpect(status().isCreated())
+			.andExpect(content().contentType(MediaTypes.HAL_JSON))
+			.andExpect(jsonPath("$.username", is("Alice")))
+			.andExpect(jsonPath("$.id", notNullValue()))
+			.andExpect(jsonPath("$.about", is("I love playing the piano and travelling.")))
 			.andDo(document("/registration",
 					requestFields(
 							fieldWithPath("username").description("New User Username"),
@@ -67,11 +72,7 @@ public class RegistrationControllerTest {
 							fieldWithPath("username").description("New User Username"),
 							fieldWithPath("about").description("General information about the user.")
 							)))
-			.andExpect(status().isCreated())
-			.andExpect(content().contentType(MediaTypes.HAL_JSON))
-			.andExpect(jsonPath("$.username", is("Alice")))
-			.andExpect(jsonPath("$.id", notNullValue()))
-			.andExpect(jsonPath("$.about", is("I love playing the piano and travelling.")));
+;
 		
 		verify(registrationService).registerUser(Mockito.any(UserDto.class));
 	}
