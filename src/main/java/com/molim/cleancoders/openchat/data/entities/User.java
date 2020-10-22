@@ -4,25 +4,25 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Setter
-@RequiredArgsConstructor
 @Builder
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 	
 	@Id
-	private final Long id;
+	private Long id;
 	@Column(name = "username", nullable = false)
-	private final String username;
+	private String username;
 	@Column(name = "password", nullable = false)
-	private final String password;
+	private String password;
 	@Column(name = "about")
-	private final String about;
+	private String about;
 
 }

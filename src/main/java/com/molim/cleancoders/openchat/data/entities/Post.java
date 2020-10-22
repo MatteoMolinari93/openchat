@@ -8,26 +8,28 @@ import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
 @Builder
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class Post {
 	
 	@Id
 	@Column
-	private final Long id;
+	private Long id;
 	@Column
-	private final Long userId;
+	private Long userId;
 	@Column
-	private final String text;
+	private String text;
 	@Column
 	@Temporal(TemporalType.TIMESTAMP)
-	private final Date dateTime;
+	private Date dateTime;
 }
