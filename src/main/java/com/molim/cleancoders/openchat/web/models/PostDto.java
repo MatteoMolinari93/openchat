@@ -1,15 +1,17 @@
 package com.molim.cleancoders.openchat.web.models;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import org.springframework.hateoas.RepresentationModel;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Builder
+@AllArgsConstructor
 public class PostDto extends RepresentationModel<PostDto> {
 	
 	@Setter
@@ -17,6 +19,6 @@ public class PostDto extends RepresentationModel<PostDto> {
 	@Setter
 	private Long userId;
 	private final String text;
-	private final LocalDateTime dateTime;
+	private final Date dateTime;
 	
 }

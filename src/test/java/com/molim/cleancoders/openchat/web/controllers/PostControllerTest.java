@@ -1,5 +1,21 @@
 package com.molim.cleancoders.openchat.web.controllers;
 
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.Date;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -16,22 +32,9 @@ import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.molim.cleancoders.openchat.exceptions.InvalidCredentialsException;
 import com.molim.cleancoders.openchat.exceptions.UserDoesNotExistException;
-import com.molim.cleancoders.openchat.services.LoginService;
 import com.molim.cleancoders.openchat.services.PostService;
 import com.molim.cleancoders.openchat.web.models.PostDto;
-import com.molim.cleancoders.openchat.web.models.UserDto;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import java.time.LocalDateTime;
-
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
-import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 
 @ExtendWith(RestDocumentationExtension.class)
 @AutoConfigureRestDocs(uriScheme = "https", uriHost = "com.molim", uriPort = 80)
@@ -58,7 +61,7 @@ public class PostControllerTest {
 						.id(1L)
 						.userId(1L)
 						.text("Hello everyone. I'm Alice.")
-						.dateTime(LocalDateTime.now())
+						.dateTime(new Date())
 						.build());
 		
 		mockMvc.perform(post(contextPath + "/user/{id}/post", 1L).content("{\r\n"
