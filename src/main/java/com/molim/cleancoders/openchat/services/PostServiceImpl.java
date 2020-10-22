@@ -1,6 +1,8 @@
 package com.molim.cleancoders.openchat.services;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,13 +29,22 @@ public class PostServiceImpl implements PostService {
 	@Override
 	@Transactional
 	public PostDto createPost(PostDto postToSave) {
-		Optional<User> user = userRepository.findById(postToSave.getUserId());
+		ifUserDoesNotExistThrowException(postToSave.getUserId());
+		return postMapper.PostToPostDto(postRepository.save(postMapper.PostDtoToPost(postToSave)));
+	}
+
+	@Override
+	public List<PostDto> getPostsForUser(Long userId) {
+		ifUserDoesNotExistThrowException(userId);
+		return postRepository.findByUserId(userId).stream().map(post -> postMapper.PostToPostDto(post)).collect(Collectors.toList());
+	}
+
+	private void ifUserDoesNotExistThrowException(Long userId) {
+		Optional<User> user = userRepository.findById(userId);
 		
 		if(user.isEmpty()) {
 			throw new UserDoesNotExistException();
 		}
-		
-		return postMapper.PostToPostDto(postRepository.save(postMapper.PostDtoToPost(postToSave)));
 	}
 
 }

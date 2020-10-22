@@ -3,6 +3,7 @@ package com.molim.cleancoders.openchat.web.models;
 import java.util.Date;
 
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,6 +13,7 @@ import lombok.Setter;
 @Getter
 @Builder
 @AllArgsConstructor
+@Relation(collectionRelation = "posts", itemRelation = "post")
 public class PostDto extends RepresentationModel<PostDto> {
 	
 	@Setter

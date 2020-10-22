@@ -50,20 +50,38 @@ CREATE POST
 
 One showing how to make a request using cURL:
 
-include::{snippets}/post/curl-request.adoc[]
+include::{snippets}/post-create/curl-request.adoc[]
 
 One showing the HTTP request:
 
-include::{snippets}/post/http-request.adoc[]
+include::{snippets}/post-create/http-request.adoc[]
 
 And one showing the HTTP response:
 
-include::{snippets}/post/http-response.adoc[]
+include::{snippets}/post-create/http-response.adoc[]
 
 Response Body:
-include::{snippets}/post/response-body.adoc[]
+include::{snippets}/post-create/response-body.adoc[]
 
 Response Fields:
-include::{snippets}/post/response-fields.adoc[]
+include::{snippets}/post-create/response-fields.adoc[]
 
+GET POSTS
 
+One showing how to make a request using cURL:
+
+include::{snippets}/posts-get/curl-request.adoc[]
+
+One showing the HTTP request:
+
+include::{snippets}/posts-get/http-request.adoc[]
+
+And one showing the HTTP response:
+
+include::{snippets}/posts-get/http-response.adoc[]
+
+Response Body:
+include::{snippets}/posts-get/response-body.adoc[]
+
+Response Fields:
+include::{snippets}/posts-get/response-fields.adoc[]

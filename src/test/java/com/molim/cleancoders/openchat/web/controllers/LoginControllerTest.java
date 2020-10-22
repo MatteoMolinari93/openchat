@@ -30,13 +30,9 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 
 @ExtendWith(RestDocumentationExtension.class)
 @AutoConfigureRestDocs(uriScheme = "https", uriHost = "com.molim", uriPort = 80)
-@TestPropertySource("classpath:application.properties")
 @WebMvcTest(LoginController.class)
 public class LoginControllerTest {
-	
-	@Value("${server.servlet.context-path}")
-	private String contextPath;
-	
+		
 	@MockBean
 	LoginService loginService;
 	
@@ -56,7 +52,7 @@ public class LoginControllerTest {
 						.about("I love playing the piano and travelling.")
 						.build());
 		
-		mockMvc.perform(post(contextPath + "/login").content("{\r\n"
+		mockMvc.perform(post("/login").content("{\r\n"
 				+ "	\"username\" : \"Alice\",\r\n"
 				+ "	\"password\" : \"alki324d\"\r\n"
 				+ "}\r\n"
@@ -84,7 +80,7 @@ public class LoginControllerTest {
 	void loginUnsuccessful() throws Exception {
 		when(loginService.loginUser(any())).thenThrow(new InvalidCredentialsException());
 		
-		mockMvc.perform(post(contextPath + "/login").content("{\r\n"
+		mockMvc.perform(post("/login").content("{\r\n"
 				+ "	\"username\" : \"Alice\",\r\n"
 				+ "	\"password\" : \"alki324d\",\r\n"
 				+ "	\"about\" : \"I love playing the piano and travelling.\"\r\n"

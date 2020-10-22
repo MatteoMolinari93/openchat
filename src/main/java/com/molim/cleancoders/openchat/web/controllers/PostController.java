@@ -1,8 +1,12 @@
 package com.molim.cleancoders.openchat.web.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.ArrayList;
+
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,14 +21,18 @@ import lombok.RequiredArgsConstructor;
 @RestController
 public class PostController {
 	
-	@Autowired
 	private final PostService postService;
 	
-	@PostMapping("/openchat/user/{id}/post")
+	@PostMapping("/user/{id}/posts")
 	ResponseEntity<PostDto> register(@PathVariable("id") final Long userId, @RequestBody PostDto postDto) {
-		System.out.println("USERID: " + userId);
 		postDto.setUserId(userId);
 		postDto.setId(null);
 		return new ResponseEntity<PostDto>(postService.createPost(postDto), HttpStatus.CREATED);
+	}
+	
+	
+	@GetMapping("/user/{id}/posts")
+	CollectionModel<PostDto> getUserPosts(@PathVariable("id") final Long userId) {
+		return CollectionModel.of(postService.getPostsForUser(userId), new ArrayList<Link>());
 	}
 }

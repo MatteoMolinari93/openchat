@@ -7,7 +7,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -77,6 +79,38 @@ public class PostServiceTest {
 		assertEquals(postToSave.getUserId(), userIdCaptor.getValue());
 				
 		verify(userRepository).findById(postToSave.getUserId());
+	}
+	
+	@Test
+	void getUserPosts() {
+		User user = new User(13L, "Matteo", null, null);
+		List<Post> userPosts = new ArrayList<Post>();
+		userPosts.add(new Post(12L, user.getId(), "Message1", new Date()));
+		userPosts.add(new Post(17L, user.getId(), "Message2", new Date()));
+		
+		when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+		when(postRepository.findByUserId(user.getId())).thenReturn(userPosts);
+		
+		List<PostDto> posts = postService.getPostsForUser(user.getId());
+		
+		assertNotNull(posts);
+		assertEquals(2, posts.size());		
+		
+		verify(userRepository).findById(user.getId());
+		verify(postRepository).findByUserId(user.getId());
+	}
+	
+	@Test
+	void getUSerPostForNotExistentUserThrowsException() {
+		long userId = 222L;
+		
+		when(userRepository.findById(userIdCaptor.capture())).thenReturn(Optional.empty());		
+		
+		assertThrows(UserDoesNotExistException.class, () -> postService.getPostsForUser(userId));
+		
+		assertEquals(userId, userIdCaptor.getValue());
+				
+		verify(userRepository).findById(userId);
 	}
 	
 }

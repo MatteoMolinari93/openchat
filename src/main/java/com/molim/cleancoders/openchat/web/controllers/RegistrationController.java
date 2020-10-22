@@ -19,7 +19,7 @@ public class RegistrationController {
 	@Autowired
 	private final RegistrationService registrationService;
 	
-	@PostMapping("/openchat/registration")
+	@PostMapping("/registration")
 	ResponseEntity<UserDto> register(@RequestBody UserDto user) {
 		UserDto savedUser = registrationService.registerUser(user);
 		

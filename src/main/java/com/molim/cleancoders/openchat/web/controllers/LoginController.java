@@ -17,7 +17,7 @@ public class LoginController {
 	@Autowired
 	private final LoginService loginService;
 	
-	@PostMapping("/openchat/login")
+	@PostMapping("/login")
 	UserDto register(@RequestBody UserDto user) {
 		UserDto loggedInUser = loginService.loginUser(user);
 		loggedInUser.removePassword();

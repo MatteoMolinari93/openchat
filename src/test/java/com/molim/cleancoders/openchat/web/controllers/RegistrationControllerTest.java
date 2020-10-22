@@ -4,14 +4,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.molim.cleancoders.openchat.exceptions.UsernameAlreadyInUseException;
@@ -28,12 +26,8 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 
 @ExtendWith(RestDocumentationExtension.class)
 @AutoConfigureRestDocs(uriScheme = "https", uriHost = "com.molim", uriPort = 80)
-@TestPropertySource("classpath:application.properties")
 @WebMvcTest(RegistrationController.class)
 public class RegistrationControllerTest {
-	
-	@Value("${server.servlet.context-path}")
-	private String contextPath;
 	
 	@MockBean
 	RegistrationService registrationService;
@@ -50,7 +44,7 @@ public class RegistrationControllerTest {
 						.about("I love playing the piano and travelling.")
 						.build());
 		
-		mockMvc.perform(post(contextPath + "/registration").content("{\r\n"
+		mockMvc.perform(post("/registration").content("{\r\n"
 				+ "	\"username\" : \"Alice\",\r\n"
 				+ "	\"password\" : \"alki324d\",\r\n"
 				+ "	\"about\" : \"I love playing the piano and travelling.\"\r\n"
@@ -81,7 +75,7 @@ public class RegistrationControllerTest {
 	void registerUnsuccessful() throws Exception {
 		when(registrationService.registerUser(any())).thenThrow(new UsernameAlreadyInUseException());
 		
-		mockMvc.perform(post(contextPath + "/registration").content("{\r\n"
+		mockMvc.perform(post("/registration").content("{\r\n"
 				+ "	\"username\" : \"Alice\",\r\n"
 				+ "	\"password\" : \"alki324d\",\r\n"
 				+ "	\"about\" : \"I love playing the piano and travelling.\"\r\n"
