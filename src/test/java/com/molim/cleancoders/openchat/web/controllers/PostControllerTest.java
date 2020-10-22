@@ -48,9 +48,12 @@ public class PostControllerTest {
 	@Autowired
 	MockMvc mockMvc;
 	
+	@Captor
+	private ArgumentCaptor<PostDto> postCaptor;
+	
 	@Test
 	void createPostSuccessful() throws Exception {
-		when(postService.createPost(Mockito.any(PostDto.class)))
+		when(postService.createPost(postCaptor.capture()))
 			.thenReturn(PostDto.builder()
 						.id(1L)
 						.userId(1L)
@@ -63,9 +66,9 @@ public class PostControllerTest {
 				+ "}").contentType(MediaType.APPLICATION_JSON))
 			.andExpect(status().isCreated())
 			.andExpect(content().contentType(MediaTypes.HAL_JSON))
-			.andExpect(jsonPath("$.userId", is(1)))
+			.andExpect(jsonPath("$.userId", is((int)Math.toIntExact(postCaptor.getValue().getUserId()))))
 			.andExpect(jsonPath("$.id", is(1)))
-			.andExpect(jsonPath("$.text", is("Hello everyone. I'm Alice.")))
+			.andExpect(jsonPath("$.text", is(postCaptor.getValue().getText())))
 			.andExpect(jsonPath("$.dateTime", notNullValue()))
 			.andDo(document("/post",
 					requestFields(

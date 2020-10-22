@@ -6,13 +6,16 @@ import org.springframework.hateoas.RepresentationModel;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Builder
 public class PostDto extends RepresentationModel<PostDto> {
 	
-	private final Long id;
-	private final Long userId;
+	@Setter
+	private Long id;
+	@Setter
+	private Long userId;
 	private final String text;
 	private final LocalDateTime dateTime;
 	
