@@ -46,4 +46,24 @@ include::{snippets}/login/response-body.adoc[]
 Response Fields:
 include::{snippets}/login/response-fields.adoc[]
 
+CREATE POST
+
+One showing how to make a request using cURL:
+
+include::{snippets}/post/curl-request.adoc[]
+
+One showing the HTTP request:
+
+include::{snippets}/post/http-request.adoc[]
+
+And one showing the HTTP response:
+
+include::{snippets}/post/http-response.adoc[]
+
+Response Body:
+include::{snippets}/post/response-body.adoc[]
+
+Response Fields:
+include::{snippets}/post/response-fields.adoc[]
+
 
