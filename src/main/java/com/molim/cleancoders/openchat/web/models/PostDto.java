@@ -21,6 +21,7 @@ public class PostDto extends RepresentationModel<PostDto> {
 	@Setter
 	private Long userId;
 	private final String text;
-	private final Date dateTime;
+	@Setter
+	private Date dateTime;
 	
 }

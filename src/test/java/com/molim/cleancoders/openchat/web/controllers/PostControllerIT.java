@@ -1,6 +1,8 @@
 package com.molim.cleancoders.openchat.web.controllers;
 
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -22,27 +24,45 @@ public class PostControllerIT {
 	private MockMvc mockMvc;
 	
 	@Test
-	void userCanLogin() throws Exception {
-	mockMvc.perform(post("/login").content("{\r\n"
-			+ "	\"username\" : \"Matteo\",\r\n"
-			+ "	\"password\" : \"1234StrongPassword\"\r\n"
-			+ "}\r\n"
-			+ "").contentType(MediaType.APPLICATION_JSON))
-		.andExpect(status().isOk())
-		.andExpect(content().contentType(MediaTypes.HAL_JSON))
-		.andExpect(jsonPath("$.username", is("Matteo")))
-		.andExpect(jsonPath("$.id", is(12)))
-		.andExpect(jsonPath("$.password").doesNotExist());
+	void createPostSuccessful() throws Exception {
+		mockMvc.perform(post("/user/{id}/posts", 12L).content("{\r\n"
+				+ "	\"text\" : \"Hello everyone. I'm Matteo.\"\r\n"
+				+ "}").contentType(MediaType.APPLICATION_JSON))
+			.andExpect(status().isCreated())
+			.andExpect(content().contentType(MediaTypes.HAL_JSON))
+			.andExpect(jsonPath("$.userId", is(12)))
+			.andExpect(jsonPath("$.id", notNullValue()))
+			.andExpect(jsonPath("$.text", is("Hello everyone. I'm Matteo.")))
+			.andExpect(jsonPath("$.dateTime", notNullValue()));
 	}
 	
 	@Test
-	void loginUnsuccessfulReturnsCorrectMessage() throws Exception {		
-		mockMvc.perform(post("/login").content("{\r\n"
-				+ "	\"username\" : \"Matteo\",\r\n"
-				+ "	\"password\" : \"alki324d\"\r\n"
-				+ "}\r\n").contentType(MediaType.APPLICATION_JSON))
+	void postCreationUnsuccessful() throws Exception {
+		mockMvc.perform(post("/user/{id}/posts", 200L).content("{\r\n"
+				+ "	\"text\" : \"Hello everyone. I'm Alice.\"\r\n"
+				+ "}").contentType(MediaType.APPLICATION_JSON))
 			.andExpect(status().isBadRequest())
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-			.andExpect(jsonPath("$.message", is("Invalid credentials.")));
+			.andExpect(jsonPath("$.message", is("User does not exist.")));
+	}
+	
+	@Test
+	void getUserPosts() throws Exception {
+		final long userId = 12L;
+		mockMvc.perform(post("/user/{id}/posts", userId).content("{\r\n"
+				+ "	\"text\" : \"Hello everyone. I'm Matteo.\"\r\n"
+				+ "}").contentType(MediaType.APPLICATION_JSON));
+		mockMvc.perform(post("/user/{id}/posts", userId).content("{\r\n"
+				+ "	\"text\" : \"Hello everyone. I'm Matteo.\"\r\n"
+				+ "}").contentType(MediaType.APPLICATION_JSON));
+
+
+		mockMvc.perform(get("/user/{id}/posts", userId))
+			.andExpect(status().isOk())
+			.andExpect(content().contentType(MediaTypes.HAL_JSON))
+			.andExpect(jsonPath("$._embedded.posts").isArray())
+			.andExpect(jsonPath("$._embedded").isNotEmpty())
+			.andExpect(jsonPath("$._embedded.posts").isArray())
+			.andExpect(jsonPath("$._embedded.posts.length()", is(4)));
 	}
 }

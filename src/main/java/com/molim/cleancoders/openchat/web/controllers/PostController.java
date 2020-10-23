@@ -1,6 +1,7 @@
 package com.molim.cleancoders.openchat.web.controllers;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
@@ -27,6 +28,7 @@ public class PostController {
 	ResponseEntity<PostDto> register(@PathVariable("id") final Long userId, @RequestBody PostDto postDto) {
 		postDto.setUserId(userId);
 		postDto.setId(null);
+		postDto.setDateTime(new Date());
 		return new ResponseEntity<PostDto>(postService.createPost(postDto), HttpStatus.CREATED);
 	}
 	
