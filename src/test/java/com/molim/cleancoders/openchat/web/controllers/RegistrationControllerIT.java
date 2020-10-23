@@ -17,10 +17,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@Transactional
 public class RegistrationControllerIT {
 
 	@Autowired
@@ -43,7 +45,14 @@ public class RegistrationControllerIT {
 	
 	@Test
 	@Order(2)
-	void loginUnsuccessfulReturnsCorrectMessage() throws Exception {				
+	void loginUnsuccessfulReturnsCorrectMessage() throws Exception {	
+		mockMvc.perform(post("/registration").content("{\r\n"
+				+ "	\"username\" : \"Alice\",\r\n"
+				+ "	\"password\" : \"alki324d\",\r\n"
+				+ "	\"about\" : \"I love playing the piano and travelling.\"\r\n"
+				+ "}\r\n"
+				+ "").contentType(MediaType.APPLICATION_JSON));
+		
 		mockMvc.perform(post("/registration").content("{\r\n"
 				+ "	\"username\" : \"Alice\",\r\n"
 				+ "	\"password\" : \"alki324d\",\r\n"

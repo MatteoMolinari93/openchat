@@ -24,7 +24,7 @@ public class PostController {
 	
 	private final PostService postService;
 	
-	@PostMapping("/user/{id}/posts")
+	@PostMapping("/users/{id}/posts")
 	ResponseEntity<PostDto> register(@PathVariable("id") final Long userId, @RequestBody PostDto postDto) {
 		postDto.setUserId(userId);
 		postDto.setId(null);
@@ -33,7 +33,7 @@ public class PostController {
 	}
 	
 	
-	@GetMapping("/user/{id}/posts")
+	@GetMapping("/users/{id}/posts")
 	CollectionModel<PostDto> getUserPosts(@PathVariable("id") final Long userId) {
 		return CollectionModel.of(postService.getPostsForUser(userId), new ArrayList<Link>());
 	}

@@ -85,3 +85,23 @@ include::{snippets}/posts-get/response-body.adoc[]
 
 Response Fields:
 include::{snippets}/posts-get/response-fields.adoc[]
+
+GET USERS
+
+One showing how to make a request using cURL:
+
+include::{snippets}/users-get/curl-request.adoc[]
+
+One showing the HTTP request:
+
+include::{snippets}/users-get/http-request.adoc[]
+
+And one showing the HTTP response:
+
+include::{snippets}/users-get/http-response.adoc[]
+
+Response Body:
+include::{snippets}/users-get/response-body.adoc[]
+
+Response Fields:
+include::{snippets}/users-get/response-fields.adoc[]

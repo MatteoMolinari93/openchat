@@ -21,8 +21,6 @@ public class RegistrationServiceImpl implements RegistrationService {
 	
 	@Override
 	public UserDto registerUser(UserDto user) {
-		
-		
 		Optional<User> foundUser = userRepository.findByUsername(user.getUsername());
 		if(foundUser.isPresent()) {
 			throw new UsernameAlreadyInUseException();

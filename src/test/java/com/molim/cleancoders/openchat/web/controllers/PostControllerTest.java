@@ -61,7 +61,7 @@ public class PostControllerTest {
 						.dateTime(new Date())
 						.build());
 		
-		mockMvc.perform(post("/user/{id}/posts", 1L).content("{\r\n"
+		mockMvc.perform(post("/users/{id}/posts", 1L).content("{\r\n"
 				+ "	\"text\" : \"Hello everyone. I'm Alice.\"\r\n"
 				+ "}").contentType(MediaType.APPLICATION_JSON))
 			.andExpect(status().isCreated())
@@ -88,7 +88,7 @@ public class PostControllerTest {
 	void postCreationUnsuccessful() throws Exception {
 		when(postService.createPost(any())).thenThrow(new UserDoesNotExistException());
 		
-		mockMvc.perform(post("/user/{id}/posts", 1L).content("{\r\n"
+		mockMvc.perform(post("/users/{id}/posts", 1L).content("{\r\n"
 				+ "	\"text\" : \"Hello everyone. I'm Alice.\"\r\n"
 				+ "}").contentType(MediaType.APPLICATION_JSON))
 			.andExpect(status().isBadRequest())
@@ -108,7 +108,7 @@ public class PostControllerTest {
 		
 		when(postService.getPostsForUser(userId)).thenReturn(userPosts);
 
-		mockMvc.perform(get("/user/{id}/posts", userId).content("{\r\n"
+		mockMvc.perform(get("/users/{id}/posts", userId).content("{\r\n"
 				+ "	\"text\" : \"Hello everyone. I'm Alice.\"\r\n"
 				+ "}").contentType(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())

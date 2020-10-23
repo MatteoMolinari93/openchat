@@ -15,9 +15,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @AutoConfigureMockMvc 
+@Transactional
 public class PostControllerIT {
 
 	@Autowired
@@ -25,7 +27,7 @@ public class PostControllerIT {
 	
 	@Test
 	void createPostSuccessful() throws Exception {
-		mockMvc.perform(post("/user/{id}/posts", 12L).content("{\r\n"
+		mockMvc.perform(post("/users/{id}/posts", 12L).content("{\r\n"
 				+ "	\"text\" : \"Hello everyone. I'm Matteo.\"\r\n"
 				+ "}").contentType(MediaType.APPLICATION_JSON))
 			.andExpect(status().isCreated())
@@ -38,7 +40,7 @@ public class PostControllerIT {
 	
 	@Test
 	void postCreationUnsuccessful() throws Exception {
-		mockMvc.perform(post("/user/{id}/posts", 200L).content("{\r\n"
+		mockMvc.perform(post("/users/{id}/posts", 200L).content("{\r\n"
 				+ "	\"text\" : \"Hello everyone. I'm Alice.\"\r\n"
 				+ "}").contentType(MediaType.APPLICATION_JSON))
 			.andExpect(status().isBadRequest())
@@ -49,20 +51,13 @@ public class PostControllerIT {
 	@Test
 	void getUserPosts() throws Exception {
 		final long userId = 12L;
-		mockMvc.perform(post("/user/{id}/posts", userId).content("{\r\n"
-				+ "	\"text\" : \"Hello everyone. I'm Matteo.\"\r\n"
-				+ "}").contentType(MediaType.APPLICATION_JSON));
-		mockMvc.perform(post("/user/{id}/posts", userId).content("{\r\n"
-				+ "	\"text\" : \"Hello everyone. I'm Matteo.\"\r\n"
-				+ "}").contentType(MediaType.APPLICATION_JSON));
 
-
-		mockMvc.perform(get("/user/{id}/posts", userId))
+		mockMvc.perform(get("/users/{id}/posts", userId))
 			.andExpect(status().isOk())
 			.andExpect(content().contentType(MediaTypes.HAL_JSON))
 			.andExpect(jsonPath("$._embedded.posts").isArray())
 			.andExpect(jsonPath("$._embedded").isNotEmpty())
 			.andExpect(jsonPath("$._embedded.posts").isArray())
-			.andExpect(jsonPath("$._embedded.posts.length()", is(4)));
+			.andExpect(jsonPath("$._embedded.posts.length()", is(2)));
 	}
 }
