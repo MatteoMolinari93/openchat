@@ -65,8 +65,7 @@ public class RegistrationControllerTest {
 							fieldWithPath("id").description("New User Id"),
 							fieldWithPath("username").description("New User Username"),
 							fieldWithPath("about").description("General information about the user.")
-							)))
-;
+							)));
 		
 		verify(registrationService).registerUser(Mockito.any(UserDto.class));
 	}
